@@ -1,0 +1,72 @@
+Relatório Detalhado
+
+Alunos: Sávio Duarte & Carlos Henrique Carvalhaes
+
+Descrição do Hardware e Software Utilizados:
+
+Hardware:
+AMD Ryzen 5 3500U with Radeon Vega Mobile Gfx 2.10GHz; Ram 12GB
+Software:
+Windows 11 e Visual Studio Code
+Instâncias Utilizadas:
+As instâncias utilizadas para os experimentos foram fornecidas pela comissão organizadora e podem ser encontradas no seguinte link: Instâncias do Problema.
+Descrição Detalhada da Metaheurística e Variações:
+O algoritmo implementado para o problema de empacotamento utiliza uma combinação de Busca Tabu e Algoritmos Genéticos (GA), técnicas de metaheurísticas bem estabelecidas para resolver problemas de otimização combinatória. A escolha dessas abordagens foi fundamentada na natureza NP-difícil do problema de empacotamento, onde a combinação de soluções pode ser altamente complexa e exigir um balanceamento entre exploração e exploração do espaço de soluções.
+A Busca Tabu é uma estratégia de busca local que se destaca por sua capacidade de evitar ciclos e explorar uma vizinhança de soluções de forma mais eficaz ao manter um registro de movimentos anteriores em uma lista tabu. Isso permite que o algoritmo escape de soluções locais, buscando uma solução global mais otimizada. A implementação da Busca Tabu no nosso GA foi projetada para ser uma espécie de First Fit em nossa GA, permitindo uma melhor exploração do espaço de soluções e evitando a estagnação em ótimos locais, além de refinar o processo de busca que vai ser realizado.
+Durante o desenvolvimento do Algoritmo Genético, foram testados diferentes tipos de abordagens de First Fit, como o First Fit Decrescente, que prioriza a alocação de itens maiores primeiro, e o First Fit Aleatório, que alocava itens de forma aleatória dentro das caixas disponíveis. Além disso, a variante First Fit Melhorado foi explorada, onde cada item era colocado na primeira caixa que pudesse o colocar, mas com uma verificação adicional para otimizar o espaço utilizado. No entanto, após a análise dos resultados e considerando a eficácia na convergência para soluções viáveis, foi decidido que as interações da Busca Tabu serviriam como o First Fit do Algoritmo Genético, proporcionando uma refinada busca local que melhorou a qualidade das soluções finais e atendeu aos objetivos do problema de Bin Packing.
+A fitness do algoritmo foi aplicada como um critério para avaliar a qualidade das soluções geradas. Neste caso, a função de fitness considera o número de caixas utilizadas e penalidades por excesso de carga. A busca por soluções com a menor função de fitness é o objetivo principal, guiando o processo evolutivo do GA. Esse método permite que soluções que utilizem menos caixas, mantendo-se dentro dos limites de capacidade e também com menor sub-uso de caixas, sejam favorecidas, promovendo uma abordagem mais eficiente para o problema de empacotamento.
+Durante a implementação do Algoritmo Genético (GA), foram testadas diversas funções de fitness para avaliar o desempenho na solução do problema de bin packing. Além da baixa ocupação de caixas, que busca minimizar o número de caixas com carga abaixo de um determinado limite, foram consideradas outras métricas, como a maximização da utilização total das caixas, priorizando a distribuição dos itens de forma a ocupar o máximo possível do espaço disponível. Também se avaliou a penalização de configurações que resultam em cargas excessivas em algumas caixas, incentivando uma distribuição mais equilibrada. Essas variações nas funções de fitness permitiram uma exploração mais abrangente do espaço de soluções, possibilitando a identificação de combinações que não apenas reduzem o número de caixas, mas também melhoram a eficiência do uso do espaço dentro delas.
+A taxa de mutação foi testada em várias porcentagens diferentes, permitindo observar como essas alterações influenciaram a diversidade das soluções geradas pelo Algoritmo Genético. As configurações de mutação variaram de 1% a 10%, e, durante os testes, foi possível identificar que taxas mais baixas tendiam a manter a convergência das soluções, mas podiam resultar em estagnação em ótimos locais. Em contrapartida, taxas de mutação mais altas proporcionam uma maior exploração do espaço de busca, levando a soluções potencialmente melhores, porém com o risco de degradação da qualidade das soluções se aplicadas em excesso. Essas análises foram fundamentais para encontrar um equilíbrio ideal na taxa de mutação, visando maximizar a eficácia do algoritmo na busca por soluções otimizadas.
+Em relação à implementação e adaptações, o algoritmo de GA foi modificado para incluir mecanismos de elitismo, onde a melhor solução de cada geração é preservada, garantindo que a qualidade não diminua ao longo das iterações. Além disso, foram implementadas operações de crossover e mutação para promover a diversidade genética da população, com mutações ocorrendo com uma taxa de 5%. O algoritmo utiliza um torneio de seleção para escolher os pais para o crossover, contribuindo para a robustez da evolução da população.
+No Algoritmo Genético, também foi testada a isenção de filhos durante o crossover, evitando a geração de combinações inválidas que excedem a capacidade das caixas. Essa abordagem visava garantir que todas as soluções geradas fossem viáveis, mas a implementação dessa restrição acabou aumentando significativamente a complexidade temporal do algoritmo. Isso ocorreu porque, para corrigir essas formações inválidas, foram necessárias tentativas adicionais de busca local, o que exigiu mais iterações e tempo de processamento. Esse trade-off entre a qualidade das soluções e a eficiência do algoritmo tornou-se um ponto crítico a ser considerado nas configurações finais do GA.
+Os parâmetros específicos do algoritmo incluem a configuração da lista tabu, que possui um tamanho máximo de 30, e a quantidade de iterações da mesma, que foi fixada em 10, enquanto na GA tendo sua quantidade de iterações fixada em 100. Esses valores foram escolhidos para equilibrar o tempo de execução com a necessidade de um processo exploratório eficiente. Foram testados vários tipos de configurações tanto para o tamanho fixo da lista tabu quanto para a quantidade de iterações da Busca Tabu, além de diferentes números de iterações do Algoritmo Genético (GA). Essas variações permitiram avaliar o impacto do tamanho da lista tabu na eficiência da busca por soluções melhores, bem como a influência do número de iterações em ambos os algoritmos. Ao ajustar esses parâmetros, foi possível observar como mudanças na estrutura e na profundidade da busca afetaram a qualidade das soluções obtidas, resultando em um entendimento mais profundo do comportamento do algoritmo em diferentes cenários de otimização.
+
+Resultados:
+Os resultados obtidos demonstraram que a combinação de Busca Tabu e Algoritmo Genético resultou em um desempenho satisfatório em diversas instâncias do problema. A análise das soluções geradas evidenciou uma diminuição no número de caixas utilizadas e uma melhor distribuição da carga, comparando-se a abordagens mais simples, como a utilização de um algoritmo de First-Fit sem a presença de metaheurísticas.
+
+Caso 201_2500_DI_22:
+66 Caixas - 155 ms de execução.
+Caso 801_40000_DI_33:
+266 Caixas - 739 ms de execução.
+Caso Falkenauer_t501_09:
+190 Caixas - 521 ms de execução.
+Caso BPP_1000_50_0.1_0.7_5:
+406 Caixas - 873 ms de execução.
+Caso BPP_50_120_0.2_0.8_9:
+26 Caixas - 49 ms de execução.
+Caso HARD7:
+59 Caixas - 175 ms de execução.
+Caso BPP_100_1000_0.2_0.8_7:
+50 Caixas - 59 ms de execução.
+
+Caso N3W3B1R8:
+30 Caixas - 128 ms de execução.
+
+Caso HARD0
+59 Caixas - 101 ms de execução.
+
+Caso BPP_50_50_0.1_0.7_0
+23 Caixas - 36 ms de execução.
+
+Caso BPP_50_150_0.1_0.8_4
+20 Caixas - 35 ms de execução.
+Caso BPP_50_300_0.1_0.8_8
+29 Caixas - 35 ms de execução.
+
+Caso BPP_100_100_0.1_0.8_0
+47 Caixas - 66 ms de execução.
+
+Caso 201_2500_NR_3
+66 Caixas - 120 ms de execução.
+
+Caso 1002_80000_NR_19
+333 Caixas - 625 ms de execução.
+
+Caso HARD4
+60 Caixas - 141 ms de execução.
+
+
+Discussões:
+A análise crítica dos resultados mostrou que, embora a combinação de métodos tenha produzido soluções eficazes, algumas instâncias ainda apresentaram desafios. A variação do desempenho em diferentes instâncias sugere que a complexidade do problema pode impactar a eficácia das metaheurísticas utilizadas. Essa observação abre espaço para futuras investigações e ajustes nos parâmetros, visando aprimorar ainda mais a eficiência do algoritmo. Em suma, a integração de Busca Tabu e Algoritmos Genéticos foi uma abordagem promissora, mostrando resultados robustos e com potencial para evolução em problemas de empacotamento.
+
+
